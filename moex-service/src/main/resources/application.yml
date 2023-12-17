@@ -1,7 +1,0 @@
-server:
-  port: 8080
-
-moex:
-  stocks:
-    url: "https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities"
-
