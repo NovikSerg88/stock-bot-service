@@ -6,6 +6,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import ru.novik.stockservice.dto.SecurityDto;
 import ru.novik.stockservice.model.Stock;
 import ru.novik.stockservice.exception.StockParsingException;
 
@@ -13,8 +14,8 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MoexStockXmlParser implements Parser {
@@ -75,8 +76,8 @@ public class MoexStockXmlParser implements Parser {
     }
 
     @Override
-    public Map<String, String> stocksNamesParse(String allStocksAsString) {
-        Map<String, String> stocks = new HashMap<>();
+    public List<SecurityDto> stocksNamesParse(String allStocksAsString) {
+        List<SecurityDto> securities = new ArrayList<>();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
@@ -99,7 +100,12 @@ public class MoexStockXmlParser implements Parser {
                                 Element rowElement = (Element) rowNode;
                                 String secId = rowElement.getAttribute("SECID");
                                 String shortName = rowElement.getAttribute("SHORTNAME");
-                                stocks.put(secId, shortName);
+                                SecurityDto securityDto = SecurityDto.builder()
+                                        .secId(secId)
+                                        .shortName(shortName)
+                                        .build();
+
+                                securities.add(securityDto);
                             }
                         }
                     }
@@ -108,7 +114,7 @@ public class MoexStockXmlParser implements Parser {
         } catch (Exception ex) {
             throw new StockParsingException(String.format("XML %s parsing exception.", allStocksAsString), ex);
         }
-        return stocks;
+        return securities;
     }
 
 

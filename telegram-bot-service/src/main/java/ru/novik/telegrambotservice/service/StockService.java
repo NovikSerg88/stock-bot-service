@@ -6,10 +6,11 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import ru.novik.stockservice.dto.SecurityDto;
 import ru.novik.stockservice.dto.StockDto;
 import ru.novik.stockservice.dto.StockShortDto;
 
-import java.util.Map;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -38,8 +39,8 @@ public class StockService {
         return stockShortDto;
     }
 
-    public Map<String, String> getAllStocksNames() {
-        Mono<Map<String, String>> response = webClient.get()
+    public List<SecurityDto> getAllStocksNames() {
+        Mono<List<SecurityDto>> response = webClient.get()
                 .uri(moexUrl + "/stocks/")
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<>() {

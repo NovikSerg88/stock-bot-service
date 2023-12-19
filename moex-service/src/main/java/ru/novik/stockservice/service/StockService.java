@@ -1,9 +1,10 @@
 package ru.novik.stockservice.service;
 
+import ru.novik.stockservice.dto.SecurityDto;
 import ru.novik.stockservice.dto.StockDto;
 import ru.novik.stockservice.dto.StockShortDto;
 
-import java.util.Map;
+import java.util.List;
 
 public interface StockService {
 
@@ -11,5 +12,5 @@ public interface StockService {
 
     StockDto getStockByTicker(String ticker);
 
-    Map<String, String> getAllStocksName();
+    List<SecurityDto> getAllStocksName();
 }

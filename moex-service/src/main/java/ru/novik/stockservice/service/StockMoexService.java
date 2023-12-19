@@ -3,13 +3,14 @@ package ru.novik.stockservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.novik.stockservice.client.MoexClient;
+import ru.novik.stockservice.dto.SecurityDto;
 import ru.novik.stockservice.dto.StockDto;
 import ru.novik.stockservice.mapper.StockMapper;
 import ru.novik.stockservice.model.Stock;
 import ru.novik.stockservice.parser.Parser;
 import ru.novik.stockservice.dto.StockShortDto;
 
-import java.util.Map;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class StockMoexService implements StockService {
     }
 
     @Override
-    public Map<String, String> getAllStocksName() {
+    public List<SecurityDto> getAllStocksName() {
         String allStocksAsString = client.getAllStocksName();
         return parser.stocksNamesParse(allStocksAsString);
     }

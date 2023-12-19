@@ -5,14 +5,13 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import ru.novik.stockservice.dto.SecurityDto;
 import ru.novik.stockservice.dto.StockDto;
 import ru.novik.stockservice.dto.StockShortDto;
 import ru.novik.telegrambotservice.constants.BotState;
 import ru.novik.telegrambotservice.keyboard.KeyboardFactory;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ru.novik.telegrambotservice.constants.KeyboardCommands.BACK;
@@ -80,15 +79,15 @@ public class ResponseHandler {
     }
 
     public SendMessage sendStocksPage(int page, long chatId) {
-        Map<String, String> allStocks = stockService.getAllStocksNames();
+        List<SecurityDto> allStocks = stockService.getAllStocksNames();
         int fromIndex = page * pageSize;
         int toIndex = Math.min((page + 1) * pageSize, allStocks.size());
 
-        List<Map.Entry<String, String>> stocksPage = new ArrayList<>(allStocks.entrySet())
-                .subList(fromIndex, toIndex);
+        List<SecurityDto> stocksPage = allStocks.subList(fromIndex, toIndex);
 
+        System.out.println(stocksPage);
         String namesWithSlash = stocksPage.stream()
-                .map(entry -> "/" + entry.getKey() + "  (" + entry.getValue() + ")")
+                .map(entry -> "/" + entry.getSecId() + "  (" + entry.getShortName() + ")")
                 .collect(Collectors.joining("\n"));
 
         /* Создание сообщения с текстом страницы списка акций */

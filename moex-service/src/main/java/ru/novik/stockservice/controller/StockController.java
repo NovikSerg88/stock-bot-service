@@ -5,11 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import ru.novik.stockservice.dto.SecurityDto;
 import ru.novik.stockservice.service.StockService;
 import ru.novik.stockservice.dto.StockDto;
 import ru.novik.stockservice.dto.StockShortDto;
 
-import java.util.Map;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class StockController {
     }
 
     @GetMapping("/stocks")
-    public Map<String, String> getAllStocksNames() {
+    public List<SecurityDto> getAllStocksNames() {
         log.info("Receiving GET request to find stocks names");
         return stockService.getAllStocksName();
     }
